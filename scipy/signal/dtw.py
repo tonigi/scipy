@@ -50,7 +50,7 @@ class DTW:
     def __init__(self, obj):
         self.__dict__.update(obj)
 
-    def __str__(self):
+    def __repr__(self):
         s = "DTW alignment object of size (query x reference): {:d} x {:d}".format(self.N,self.M)
         return(s)
 
@@ -85,7 +85,7 @@ def dtw(x, y=None,
     if open_end or open_begin or not distance_only or window_type:
         raise Exception("Only the most basic DTW form is implemented in scipy. Please use the R version.")
 
-    if not y:
+    if y is None:
         x = np.array(x)
         if len(x.shape) != 2:
             raise Exception("A 2D local distance matrix was expected")
