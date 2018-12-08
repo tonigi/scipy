@@ -30,13 +30,16 @@ cdef extern from "dtw_computeCM.h":
 
 
   
-def _computeCM(int [:] s not None,
-               int [:,::1] wm not None,
+def _computeCM(int [:,::1] wm not None,
                double [:,::1] lm not None,
                int [:] nstepsp not None,
                double [::1] dir not None,
                double [:,::1] cm not None,
                int [:,::1] sm = None  ):
+
+    cdef int [:] s = np.array(wm.shape, dtype=np.int32)
+
+    sm = np.full_like(lm.base, -1, dtype=np.int32)
 
     computeCM(&s[0],
               &wm[0,0],
@@ -56,8 +59,6 @@ def _test_computeCM(TS=5):
 
     DTYPE = np.int32
     
-    ts=np.array((TS, TS), dtype=DTYPE)
-
     twm = np.ones((TS, TS), dtype=DTYPE)
 
     tlm = np.zeros( (TS,TS), dtype=np.double)
@@ -73,15 +74,11 @@ def _test_computeCM(TS=5):
     tcm = np.full_like(tlm, np.nan, dtype=np.double)
     tcm[0,0] = tlm[0,0]
 
-    tsm = np.full_like(tlm, -1, dtype=DTYPE)
-
-    a, b = _computeCM(ts,
-                      twm,
+    a, b = _computeCM(twm,
                       tlm,
                       tnstepsp,
                       tdir,
-                      tcm,
-                      tsm)
+                      tcm)
     return (a,b)
     
     
