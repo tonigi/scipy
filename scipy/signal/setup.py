@@ -29,6 +29,9 @@ def configuration(parent_package='', top_path=None):
                   'C_bspline_util.c', 'Z_bspline_util.c', 'bspline_util.c']
     config.add_extension('spline', sources=spline_src, **numpy_nodepr_api)
 
+    config.add_extension('dtw',
+                         sources=['dtw_computeCM.c','_dtw_utils.c'])
+
     return config
 
 
