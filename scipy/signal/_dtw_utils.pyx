@@ -11,7 +11,7 @@ from cpython cimport array
 # Not sure this file is even necessary.
 
 
-__all__ = ["dtw","_computeCM","_test_computeCM"]
+__all__ = ["_computeCM","_test_computeCM"]
 
 
 
@@ -28,48 +28,25 @@ cdef extern from "dtw_computeCM.h":
 
 
 
-  
-
 
   
-def _computeCM(np.int[::1] s not None,
-               np.int[:,::1] wm not None,
-               np.float64_t[:,::1] lm not None,
-               np.int[:] nsteps not None,
-               np.float64_t[::1] dir not None,
-               np.float64_t[:,::1] cm not None,
-               np.int[:,::1] sm not None  ):
+def _computeCM(int [:] s not None,
+               int [:,::1] wm not None,
+               double [:,::1] lm not None,
+               int [:] nstepsp not None,
+               double [::1] dir not None,
+               double [:,::1] cm not None,
+               int [:,::1] sm = None  ):
 
-    # Size
-    cdef int [:] ts=s
+    computeCM(&s[0],
+              &wm[0,0],
+              &lm[0,0],
+              &nstepsp[0],
+              &dir[0],
+              &cm[0,0],
+              &sm[0,0])
 
-    # Window
-    cdef int [:,:] twm = wm
-
-    # Local distance matrix
-    cdef double [:,:] tlm = lm
-
-    # Step pattern size
-    cdef int [:] tnstepsp = nsteps
-
-    # Step pattern
-    cdef double [:] tdir = dir
-
-    # Computed cumulative cost matrix
-    cdef double [:,:] tcm = cm
-
-    # Direction matrix
-    cdef int [:,:] tsm = sm
-
-    computeCM(&ts[0],
-              &twm[0,0],
-              &tlm[0,0],
-              &tnstepsp[0],
-              &tdir[0],
-              &tcm[0,0],
-              &tsm[0,0])
-
-    return (tcm, tsm)
+    return (cm.base, sm.base)
 
 
 
@@ -77,6 +54,8 @@ def _computeCM(np.int[::1] s not None,
   
 def _test_computeCM(TS=5):
 
+    DTYPE = np.int32
+    
     ts=np.array((TS, TS), dtype=DTYPE)
 
     twm = np.ones((TS, TS), dtype=DTYPE)
