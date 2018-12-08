@@ -20,6 +20,14 @@ symmetric2=stepPattern(np.array([  1,1,1,-1,
                                    3,0,0,1 ]),
                        "N+M")
 
+symmetric1=stepPattern(np.array([  1,1,1,-1,
+                                   1,0,0,1,
+                                   2,0,1,-1,
+                                   2,0,0,1,
+                                   3,1,0,-1,
+                                   3,0,0,1 ]),
+                       "NA")
+
 
 
 def dtw(x, y=None,
@@ -45,8 +53,17 @@ def dtw(x, y=None,
     """
 
     if open_end or open_begin or not distance_only or window_type or dist_method != "Euclidean":
-        raise "Unsupported yet"
+        raise Exception("Only the most basic DTW form is implemented in scipy. Please use the R version.")
 
+
+    
+
+
+    out={
+        
+        }
+
+    
     
     
     
