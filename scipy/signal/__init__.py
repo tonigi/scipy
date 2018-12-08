@@ -306,6 +306,15 @@ Spectral Analysis
    check_COLA     -- Check the COLA constraint for iSTFT reconstruction
    check_NOLA     -- Check the NOLA constraint for iSTFT reconstruction
 
+
+Dynamic Time Warping (DTW)
+==========================
+
+.. autosummary::
+   :toctree: generated/
+
+
+
 """
 from __future__ import division, print_function, absolute_import
 
@@ -327,6 +336,7 @@ from .signaltools import *
 from ._savitzky_golay import savgol_coeffs, savgol_filter
 from .spectral import *
 from .wavelets import *
+from .dtw import *
 from ._peak_finding import *
 from .windows import get_window  # keep this one in signal namespace
 
