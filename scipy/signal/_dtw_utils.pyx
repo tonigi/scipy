@@ -11,7 +11,7 @@ from cpython cimport array
 # Not sure this file is even necessary.
 
 
-__all__ = []
+__all__ = ["test_computeCM"]
 
 
 
@@ -29,7 +29,6 @@ cdef extern from "dtw_computeCM.h":
 
   
 def test_computeCM(TS=5):
-    TSS=TS*TS
 
     ts=np.array((TS, TS), dtype=np.int)
     cdef array.array ts_c = array.array('i', ts)
