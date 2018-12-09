@@ -103,6 +103,7 @@ def dtw(x, y=None,
         and in particular see:
             .distance
             .costMatrix
+            .index1 etc.
 
     See also
     --------
