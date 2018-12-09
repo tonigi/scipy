@@ -1,5 +1,7 @@
 """Utility functions for DTW alignments."""
 
+# Author: Toni Giorgino
+
 import warnings
 
 import numpy as np
@@ -8,10 +10,8 @@ cimport numpy as np
 from cpython cimport array
 
 
-# Not sure this file is even necessary.
 
-
-__all__ = ["_computeCM","_test_computeCM"]
+__all__ = ["_computeCM"]
 
 
 

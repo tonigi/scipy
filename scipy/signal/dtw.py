@@ -68,17 +68,24 @@ def dtw(x, y=None,
         distance_only=True,
         open_end=False,
         open_begin=False):
-    """
-    Compute Dynamic Time Warp and find optimal alignment between two time series.
+    """Compute Dynamic Time Warp and find optimal alignment between two time series.
 
-    Under development. The syntax should mirror the one in R 'dtw' package. Please see 
+    Under development. The syntax should mirror the one in R 'dtw'
+    package.  Note that dots in argument names are replaced by
+    underscores.
+
+    Returns a class with the same properties as the R implementation (q.v.),
+    and in particular see:
+      .distance
+      .costMatrix
+
+    Please see 
      * https://cran.r-project.org/web/packages/dtw/index.html
      * http://dtw.r-forge.r-project.org
-     * http://www.jstatsoft.org/v31/i07/
      * https://www.rdocumentation.org/packages/dtw/versions/1.20-1/topics/dtw
 
-    Returns a dictionary with the same properties as the R implementation (q.v.).
-    Note that dots in argument names are replaced by underscores.
+    Please cite
+     * http://www.jstatsoft.org/v31/i07/
 
     """
 
