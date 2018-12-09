@@ -5,20 +5,19 @@ from ._dtw_utils import *
 from scipy.spatial.distance import cdist
 
 __all__ = ['dtw',
-           'symmetric1','symmetric2','asymmetric']
-
+           'symmetric1', 'symmetric2', 'asymmetric']
 
 
 # --------------------
 
-class stepPattern:
+class StepPattern:
     def __init__(self, mx, hint):
-        self.mx = np.array(mx,dtype=np.double)
+        self.mx = np.array(mx, dtype=np.double)
         self.hint = hint
 
-    def getP(self):
+    def get_p(self):
         # Dimensions are reversed wrt R
-        s = self.mx[:,[0,2,1,3]]
+        s = self.mx[:, [0, 2, 1, 3]]
         return s.T.reshape(-1)
 
     def get_n_patterns(self):
@@ -26,29 +25,30 @@ class stepPattern:
 
 
 # TODO: all step patterns and generation functions
-symmetric2=stepPattern(np.array([[  1,1,1,-1, ],
-                                 [ 1,0,0,2,   ],
-                                 [ 2,0,1,-1,  ],
-                                 [ 2,0,0,1,   ],
-                                 [ 3,1,0,-1,  ],
-                                 [ 3,0,0,1 ]]),
-                       "N+M")
+symmetric2 = StepPattern(np.array([[1, 1, 1, -1, ],
+                                   [1, 0, 0, 2, ],
+                                   [2, 0, 1, -1, ],
+                                   [2, 0, 0, 1, ],
+                                   [3, 1, 0, -1, ],
+                                   [3, 0, 0, 1]]),
+                         "N+M")
 
-symmetric1=stepPattern(np.array([[ 1,1,1,-1,  ],
-                                 [ 1,0,0,1,   ],
-                                 [ 2,0,1,-1,  ],
-                                 [ 2,0,0,1,   ],
-                                 [ 3,1,0,-1,  ],
-                                 [ 3,0,0,1 ]]),
-                       "NA")
+symmetric1 = StepPattern(np.array([[1, 1, 1, -1, ],
+                                   [1, 0, 0, 1, ],
+                                   [2, 0, 1, -1, ],
+                                   [2, 0, 0, 1, ],
+                                   [3, 1, 0, -1, ],
+                                   [3, 0, 0, 1]]),
+                         "NA")
 
-asymmetric=stepPattern(np.array([ [ 1,   1,   0,  -1],
-                                  [ 1,   0,   0,   1],
-                                  [ 2,   1,   1,  -1],
-                                  [ 2,   0,   0,   1],
-                                  [ 3,   1,   2,  -1],
-                                  [ 3,   0,   0,   1]]),
-                       "N")
+asymmetric = StepPattern(np.array([[1, 1, 0, -1],
+                                   [1, 0, 0, 1],
+                                   [2, 1, 1, -1],
+                                   [2, 0, 0, 1],
+                                   [3, 1, 2, -1],
+                                   [3, 0, 0, 1]]),
+                         "N")
+
 
 # --------------------
 
@@ -57,10 +57,8 @@ class DTW:
         self.__dict__.update(obj)
 
     def __repr__(self):
-        s = "DTW alignment object of size (query x reference): {:d} x {:d}".format(self.N,self.M)
-        return(s)
-
-
+        s = "DTW alignment object of size (query x reference): {:d} x {:d}".format(self.N, self.M)
+        return (s)
 
 
 # --------------------
@@ -130,7 +128,7 @@ def dtw(x, y=None,
     """
 
     if open_end or open_begin or not distance_only or window_type:
-        raise ValueError("Only the most basic DTW form is implemented in scipy. Please use the R version.")
+        raise ValueError("Only the basic DTW functionality is implemented in scipy. Please use the R version.")
 
     if y is None:
         x = np.array(x)
@@ -141,35 +139,34 @@ def dtw(x, y=None,
         x = np.atleast_2d(x)
         y = np.atleast_2d(y)
         if x.shape[0] == 1:
-            x=x.T
+            x = x.T
         if y.shape[0] == 1:
-            y=y.T
-        lm = cdist(x,y, metric=dist_method)
+            y = y.T
+        lm = cdist(x, y, metric=dist_method)
 
-
-    n,m = lm.shape
+    n, m = lm.shape
 
     w = np.ones_like(lm, dtype=np.int32)
 
-    sp = np.array(step_pattern.getP(), dtype=np.double)
+    sp = np.array(step_pattern.get_p(), dtype=np.double)
 
     nsp = np.array([step_pattern.get_n_patterns()], dtype=np.int32)
 
     cm = np.full_like(lm, np.nan, dtype=np.double)
-    cm[0,0] = lm[0,0]
+    cm[0, 0] = lm[0, 0]
 
     ncm, sm = _computeCM(w,
-                        lm,
-                        nsp,
-                        sp,
-                        cm)
+                         lm,
+                         nsp,
+                         sp,
+                         cm)
 
-    dist = ncm[n-1,m-1]
+    dist = ncm[n - 1, m - 1]
 
-    if dist != dist:            # nan
+    if dist != dist:  # nan
         raise ValueError("No warping path found compatible with the local constraints")
 
-    out={
+    out = {
         'N': n,
         'M': m,
         'distance': dist,
@@ -177,6 +174,6 @@ def dtw(x, y=None,
         'directionMatrix': sm,
         'localCostMatrix': lm,
         'stepPattern': step_pattern,
-        }
+    }
 
-    return(DTW(out))
+    return (DTW(out))
