@@ -1,3 +1,12 @@
+# Author: Toni Giorgino 2018
+#
+# If you use this software in academic work, please cite:
+#  * T. Giorgino. Computing and Visualizing Dynamic Time Warping
+#    Alignments in R: The dtw Package. Journal of Statistical
+#    Software, v. 31, Issue 7, p. 1 - 24, aug. 2009. ISSN
+#    1548-7660. doi:10.18637/jss.v031.i07. http://www.jstatsoft.org/v31/i07/
+
+
 from __future__ import division, print_function, absolute_import
 
 import numpy as np
@@ -77,9 +86,9 @@ def dtw(x, y=None,
         open_begin=False):
     """Compute Dynamic Time Warp and find optimal alignment between two time series.
 
-    Under development. The syntax should mirror the one in R 'dtw'
-    package.  Note that dots in argument names are replaced by
-    underscores.
+    Under development. The syntax mirrors the one in R 'dtw' package
+    (please see links below), except that dots in argument names are
+    replaced by underscores.
 
     Parameters
     ----------
@@ -89,17 +98,21 @@ def dtw(x, y=None,
        If y = None, interpreted as the local distance matrix instead.
     y : array_like
        Second input. A timeseries (1D or higher dimension), with time in rows.
-    step_pattern : object, optional
-       An object representing the recursion form, i.e. local slope constraints.
-       Currenly only symmetric1 and symmetric2 are implemented.
     dist_method : str, optional
        One of the distance metrics supported by scipy.spatial.distance.cdist
        Defaults to 'euclidean'
+    step_pattern : object, optional
+       An object representing the recursion form, i.e. local slope constraints.
+       Currenly only symmetric1 and symmetric2 are implemented.
+    distance_only : bool, optional
+       Only compute the distance, not the alignment (may be slightly faster
+       and memory-efficient)
+
 
     Returns
     -------
     alignment : object
-        an instance of type DTW with the same properties as the R implementation (q.v.),
+        an instance of type DTW encapsulating the same properties as the R implementation (q.v.),
         and in particular see:
             .distance
             .costMatrix
@@ -111,8 +124,14 @@ def dtw(x, y=None,
      * http://dtw.r-forge.r-project.org
      * https://www.rdocumentation.org/packages/dtw/versions/1.20-1/topics/dtw
 
-    Please cite
-     * http://www.jstatsoft.org/v31/i07/
+    Citation
+    --------
+    If you use this software in academic work, please cite:
+
+     * T. Giorgino. Computing and Visualizing Dynamic Time Warping
+       Alignments in R: The dtw Package. Journal of Statistical
+       Software, v. 31, Issue 7, p. 1 - 24, aug. 2009. ISSN
+       1548-7660. doi:10.18637/jss.v031.i07. http://www.jstatsoft.org/v31/i07/
 
     Examples
     --------
@@ -203,9 +222,9 @@ def dtw(x, y=None,
 
 
 
+# ----------------------------------------
 
-
-# This is O(n). Let's not make in unreadable.
+# This is O(n). Let's not make it unreadable.
 def _backtrack(al):
     n = al.N
     m = al.M
@@ -260,4 +279,10 @@ def _backtrack(al):
             'stepsTaken': ss }
 
     return(out)
+
+
+# ----------------------------------------
+
+
+print("Importing the dtw module. When using in academic works please cite:\n T. Giorgino. Computing and Visualizing Dynamic Time Warping Alignments in R: The dtw Package.\n J. Stat. Soft., doi:10.18637/jss.v031.i07.\n")
 
