@@ -3,12 +3,14 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 from numpy.testing import (assert_, assert_approx_equal,
                            assert_allclose, assert_array_equal, assert_equal,
+                           assert_raises,
                            assert_array_almost_equal_nulp)
 import pytest
 from pytest import raises as assert_raises
 
-from scipy.signal import dtw
+from scipy.signal.dtw import *
 
+from numpy import nan
 
         
 """
@@ -58,3 +60,28 @@ class TestDTW(object):
         al = dtw(x,y)
         assert_approx_equal(al.distance, 2.0)
 
+        
+    def test_asymmetric(self):
+        lm = np.array( [[ 1,1,2,2,3,3 ],
+                        [ 1,1,1,2,2,2 ],
+                        [ 3,1,2,2,3,3 ],
+                        [ 3,1,2,1,1,2 ],
+                        [ 3,2,1,2,1,2 ],
+                        [ 3,3,3,2,1,2 ]], dtype=np.double)
+        alignment = dtw(lm, step_pattern=asymmetric)
+        assert_array_equal(alignment.costMatrix,
+                           np.array([[ 1., nan, nan, nan, nan, nan],
+                                     [ 2.,  2.,  2., nan, nan, nan],
+                                     [ 5.,  3.,  4.,  4.,  5., nan],
+                                     [ 8.,  4.,  5.,  4.,  5.,  6.],
+                                     [11.,  6.,  5.,  6.,  5.,  6.],
+                                     [14.,  9.,  8.,  7.,  6.,  7.]])
+        )
+
+
+    def test_impossible(self):
+        x = np.ones(4)
+        y = np.ones(20)
+        with assert_raises(ValueError):
+            dtw(x,y, step_pattern=asymmetric)
+        
