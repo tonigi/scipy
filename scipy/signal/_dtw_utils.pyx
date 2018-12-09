@@ -37,7 +37,10 @@ def _computeCM(int [:,::1] wm not None,
                double [:,::1] cm not None,
                int [:,::1] sm = None  ):
 
-    cdef int [:] s = np.array(wm.shape, dtype=np.int32)
+    # Memory ordering is transposed (fortran-like in R). 
+    st = np.array([wm.shape[1],
+                   wm.shape[0]], dtype=np.int32)
+    cdef int [:] s = st
 
     sm = np.full_like(lm.base, -1, dtype=np.int32)
 

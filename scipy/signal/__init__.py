@@ -313,6 +313,7 @@ Dynamic Time Warping (DTW)
 .. autosummary::
    :toctree: generated/
 
+   dtw     -- Compute Dynamic Time Warp and find optimal alignment between two time series
 
 
 """
