@@ -47,6 +47,18 @@ class TestDTW(object):
                            np.array([[1., 3., 6., 10., 15.],
                                      [1., 2., 4., 7., 11.],
                                      [2., 1., 2., 4., 7.]]))
+        assert_approx_equal(al.normalizedDistance,0.875)
+        
+
+    def test_backtrack(self):
+        x = np.array([1, 2, 3])
+        y = np.array([2, 3, 4, 5, 6])
+        al = dtw(x, y)
+        assert_array_equal(al.index1,  np.array([0, 1, 2, 2, 2, 2]))
+        assert_array_equal(al.index1s, np.array([0, 1, 2, 2, 2, 2]))
+        assert_array_equal(al.index2,  np.array([0, 0, 1, 2, 3, 4]))
+        assert_array_equal(al.index2s, np.array([0, 0, 1, 2, 3, 4]))
+        
 
     def test_vectors(self):
         x = np.array([1, 2, 3])

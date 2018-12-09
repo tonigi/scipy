@@ -56,7 +56,8 @@ def _computeCM(int [:,::1] wm not None,
 
 
 
-  
+
+    
   
 def _test_computeCM(TS=5):
 
